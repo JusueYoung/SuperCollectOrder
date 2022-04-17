@@ -59,8 +59,10 @@ An Algorithm for solve Kaibin's optimal problem
 
   经过以上过程，拼单问题可以简化为一个整数的线性规划问题，结合yalmip工具包可以求解到如下结果
 
-  以1月数据为输入，得到结果如下：4006676是理论的求解上限制，
+  以1月数据为输入，得到结果如下：4006676是理论的求解上限制。
 
-![image-20220403162036928](file://C:\Users\18045\AppData\Roaming\Typora\typora-user-images\image-20220403162036928.png?lastModify=1650207396)
 
-![image-20220403162447230](file://C:\Users\18045\AppData\Roaming\Typora\typora-user-images\image-20220403162447230.png?lastModify=1650207396)
+
+![image-20220403162036928](/Result\image-20220403162036928.png)
+
+![image-20220403162447230](/Result\image-20220403162447230.png)
