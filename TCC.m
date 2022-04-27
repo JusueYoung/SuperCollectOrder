@@ -4,9 +4,8 @@
 % Author: ZhuXiang
 % Date: April 24, 2022
 % ===========================================================================
-function Z = TCC()
+function Z = TCC(degree)
 
-clc; clear;
 %% Load data
 filename = 'JanTest.csv';
 raw_data = importdata(filename);
@@ -14,9 +13,8 @@ raw_data = importdata(filename);
 mentle_amount = raw_data.data(:,1);
 price = raw_data.data(:,2);
 dry_amount = str2num(char(raw_data.textdata(:,6)));
-goods_id = raw_data.textdata(:,1);
-ratio = 2.20462 * [0.5, 0.48, 0.46, 0.44, 0.42, 0.40, 0.38, 0]';
-solub = [0.07995, 0.06995, 0.05995, 0.04995, 0.03995, 0.02995, 0.01995, 0]';
+ratio = 2.20462 * degree(:,1);
+solub = degree(:,2);
 
 C = mentle_amount .* price * ratio';
 [n, m] = size(C);

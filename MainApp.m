@@ -78,7 +78,10 @@ function pushbutton1_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-Z = -TCC();
+% degree sheet
+degree_file = get(handles.edit3, 'String');
+degree_mat = xlsread(degree_file);
+Z = -TCC(degree_mat);
 set(handles.edit4, 'String', num2str(Z));
 
 

@@ -1,17 +1,28 @@
-% Super Collect Orders
-% ===========================================================================
-% Version: 2.0
-% Author: ZhuXiang
-% Date: April 2, 2022
-% ===========================================================================
-clc; clear; close all;
-%% Load data
-filename = 'JanTest.csv';
-raw_data = importdata(filename);
-% =========================== process to param =========================== %
-mentle_amount = raw_data.data(:,1);
-price = raw_data.data(:,2);
-dry_amount = str2num(char(raw_data.textdata(:,6)));
+clear;
+clc;
+[num_data, str_data] = xlsread('TEST1');
+price = [];
+dry_amount = [];
+mentle_amount = [];
+
+head_title = str_data(1, :);
+sheet = str_data;
+sheet(2:end, 2) = num2cell(num_data(:, 1));
+sheet(2:end, 4:end) = num2cell(num_data(:, 3:end));
+
+
+for i = 1:size(head_title,2)
+    elem = head_title(i);
+    if strcmp(char(elem),'钴金属量')
+        mentle_amount = num_data(:, i-1);
+    elseif strcmp(char(elem),'MB价格')
+        price = num_data(:, i-1);
+    elseif strcmp(char(elem),'干重吨')
+        dry_amount = num_data(:, i-1);
+    else
+    end
+end
+
 ratio = 2.20462 * [0.5, 0.48, 0.46, 0.44, 0.42, 0.40, 0.38, 0]';
 solub = [0.07995, 0.06995, 0.05995, 0.04995, 0.03995, 0.02995, 0.01995, 0]';
 
@@ -51,29 +62,16 @@ end
 %% Write Result to File
 T = value(X);
 [~, group] = max(T,[],2);
-file_column = size(raw_data.data,2) + size(raw_data.textdata,2);
-read_sheet = [raw_data.textdata, num2cell(raw_data.data)];
-wirte_sheet = [];
+wirte_sheet = sheet(1, :);
 for i = 1: m
     index = find(group == i);
-    empty_line = cell(1,file_column);
+    empty_line = cell(1,size(head_title,2));
     if ~isempty(index)
-        group_sheet = read_sheet(index, :);
+        group_sheet = sheet(index+1, :);
         wirte_sheet = [wirte_sheet; group_sheet];
     end
     wirte_sheet = [wirte_sheet; empty_line];
 end
 
-fid = fopen('TCC1.csv','wt');
-if fid<0
-	errordlg('File creation failed','Error');
-end
-for i=1:size(wirte_sheet,1)
-    fprintf(fid, '%s,%s,%s,%s,%s,%s,%s,%d,%d,%d\n', ...
-        wirte_sheet{i,1}, wirte_sheet{i,2}, ...
-        wirte_sheet{i,3}, wirte_sheet{i,4}, ...
-        wirte_sheet{i,5}, wirte_sheet{i,6}, ...
-        wirte_sheet{i,7}, wirte_sheet{i,8}, ...
-        wirte_sheet{i,9}, wirte_sheet{i,10});
-end
-fclose(fid);
+xlswrite('./TCC1.xlsx',wirte_sheet);
+
